@@ -1,4 +1,6 @@
 require 'bundler'
+require 'sinatra/activerecord'
+require_relative 'app/models/item'
 
 Bundler.require
 
@@ -15,4 +17,9 @@ set :public_folder, Proc.new { File.join(root, "dist") }
 
 get '/' do
   erb :index
+end
+
+get '/items' do
+  items = Item.all
+  json items
 end
