@@ -1,8 +1,11 @@
 require 'bundler'
 require 'sinatra/activerecord'
 require_relative 'app/models/item'
+require_relative 'app/graphql/schema'
+require 'rack/contrib'
 
 Bundler.require
+use Rack::PostBodyContentTypeParser
 
 configure :development do
   set :database, {
@@ -22,4 +25,13 @@ end
 get '/items' do
   items = Item.all
   json items
+end
+
+post '/graphql' do
+  result = AppSchema.execute(
+    params[:query],
+    variables: params[:variables],
+    context: { current_user: nil },
+  )
+  json result
 end
