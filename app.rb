@@ -11,20 +11,22 @@ use Rack::PostBodyContentTypeParser
 set :views, Proc.new { File.join(root, "src") }
 set :public_folder, Proc.new { File.join(root, "dist") }
 
-get '/' do
-  erb :index
-end
+class App < Sinatra::Base
+  get '/' do
+    erb :index
+  end
 
-get '/items' do
-  items = Item.all
-  json items
-end
+  get '/items' do
+    items = Item.all
+    json items
+  end
 
-post '/graphql' do
-  result = AppSchema.execute(
-    params[:query],
-    variables: params[:variables],
-    context: { current_user: nil },
-  )
-  json result
+  post '/graphql' do
+    result = AppSchema.execute(
+      params[:query],
+      variables: params[:variables],
+      context: { current_user: nil },
+    )
+    json result
+  end
 end
