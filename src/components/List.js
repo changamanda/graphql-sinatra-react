@@ -1,13 +1,17 @@
 import React from 'react';
+import { useQuery } from '@apollo/react-hooks';
+import { GET_ITEMS } from '../hooks/getItems';
 
 const List = () => {
+  const { loading, error, data } = useQuery(GET_ITEMS);
+
   return (
     <div class='container'>
       <h1 class='mt-5'>Do These Things!</h1>
       <ul class='list-group'>
-        <li class='list-group-item'>Walk the dog</li>
-        <li class='list-group-item'>Buy groceries</li>
-        <li class='list-group-item'>Sweep the floor</li>
+        {data && data.items && data.items.map((item) => {
+          return <li class='list-group-item'>{item.description}</li>
+        })}
       </ul>
     </div>
   );

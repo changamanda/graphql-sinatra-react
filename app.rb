@@ -3,6 +3,7 @@ require 'sinatra/activerecord'
 require_relative 'app/models/item'
 require_relative 'app/graphql/schema'
 require 'rack/contrib'
+require 'pry'
 
 Bundler.require
 use Rack::PostBodyContentTypeParser
